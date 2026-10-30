@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: job-platform-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: OPENAI_MODEL
+        value: gpt-4.1-mini
+      - key: OPENAI_SEARCH_MODEL
+        value: gpt-4.1-mini
+      # Secrets / per-deploy values: Render asks for these when the Blueprint is applied
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: MONGODB_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
